@@ -1,0 +1,9 @@
+Package: listcomp
+Title: Simple list comprehensions in R.
+Version: 0.0.0.9000
+Authors@R: person("Dex", "Groves", email = "dex.groves@gmail.com", role = c("aut", "cre"))
+Description: Execute basic Python-style list comprehensions up to a complexity level of `fn_a(item) for item in my_list if fn_b(item) == TRUE`
+Depends: R (>= 3.2.0), stringr
+License: GPL (>= 2)
+LazyData: true
+Suggests: testthat
