@@ -18,3 +18,8 @@ test_that("operation(item) for item in list if condition works", {
                listcomp('item ^ 2 for item in my_list if item %% 2 == 0'))
 })
 
+test_that("simple nesting works", {
+  expect_equal(my_list,
+               listcomp('item for item in [x for x in my_list]'))
+})
+
