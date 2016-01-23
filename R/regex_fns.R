@@ -11,6 +11,6 @@ get_item_operation <- function(string) {
   str_extract(string, ".+(?= for)")
 }
 
-get_item_conditional <- function(string) {
+get_item_condition <- function(string) {
   str_extract(string, "(?<=if ).+")
 }

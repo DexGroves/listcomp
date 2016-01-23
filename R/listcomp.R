@@ -17,7 +17,7 @@ listcomp <- function(string) {
   target_obj <- get_target_object(string)
   item_name <- get_item_name(string)
   item_operation <- get_item_operation(string)
-  lambda_cond <- get_item_conditional(string)
+  item_condition <- get_item_condition(string)
 
   lambda_fn <- get_item_operation_fn(item_operation, item_name)
 
@@ -27,10 +27,10 @@ listcomp <- function(string) {
 
   out <- eval(target_expr, enclos = parent.frame())
 
-  if (is.na(lambda_cond)) {
+  if (is.na(item_condition)) {
     cond_vec <- TRUE
   } else {
-    cond_fn <- get_item_operation_fn(lambda_cond, item_name)
+    cond_fn <- get_item_operation_fn(item_condition, item_name)
 
     cond_expr <- {
       sapply(eval.parent(parse(text = target_obj)), cond_fn)
@@ -41,3 +41,5 @@ listcomp <- function(string) {
 
   out[cond_vec]
 }
+
+lc <- listcomp
