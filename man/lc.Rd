@@ -22,10 +22,14 @@ and greater than or equal to: \cr
 Supports nesting by wrapping inner comprehensions with `[]`.
 }
 \examples{
-my_list <- seq(10)
+my_sequence <- seq(10)
 nested_list <- list(seq(5), seq(10))
-lc('item ^ 2 for item in my_list if item \%\% 2 == 0')
+lc('item ^ 2 for item in my_sequence if item \%\% 2 == 0')
 lc('x ^ 2 for x in [max(y) for y in nested_list]')
+
+library("ggplot2")
+data(diamonds)
+lc('mean(x) for x in diamonds if is.numeric(x)')
 }
 \author{
 Dex Groves

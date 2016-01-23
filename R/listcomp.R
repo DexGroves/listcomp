@@ -13,10 +13,14 @@
 #' @import stringr
 #' @export
 #' @examples
-#' my_list <- seq(10)
+#' my_sequence <- seq(10)
 #' nested_list <- list(seq(5), seq(10))
-#' lc('item ^ 2 for item in my_list if item %% 2 == 0')
+#' lc('item ^ 2 for item in my_sequence if item %% 2 == 0')
 #' lc('x ^ 2 for x in [max(y) for y in nested_list]')
+#'
+#' library("ggplot2")
+#' data(diamonds)
+#' lc('mean(x) for x in diamonds if is.numeric(x)')
 lc <- function(string) {
   target_obj <- get_target_object(string)
   item_name <- get_item_name(string)
@@ -26,14 +30,6 @@ lc <- function(string) {
   if (is.na(target_obj) | is.na(item_name) | is.na(item_operation)) {
     stop("Invalid comprehension!", call. = FALSE)
   }
-
-  lambda_fn <- get_item_operation_fn(item_operation, item_name)
-
-  target_expr <- {
-    sapply(eval.parent(parse(text = target_obj)), lambda_fn)
-  }
-
-  out <- eval(target_expr, enclos = parent.frame())
 
   if (is.na(item_condition)) {
     cond_vec <- TRUE
@@ -47,7 +43,13 @@ lc <- function(string) {
     cond_vec <- eval(cond_expr, enclos = parent.frame())
   }
 
-  out[cond_vec]
+  lambda_fn <- get_item_operation_fn(item_operation, item_name)
+
+  target_expr <- {
+    sapply(eval.parent(parse(text = target_obj))[cond_vec], lambda_fn)
+  }
+
+  eval(target_expr, enclos = parent.frame())
 }
 
 listcomp <- lc
