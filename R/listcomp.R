@@ -22,7 +22,7 @@ listcomp <- function(string) {
   lambda_fn <- get_item_operation_fn(item_operation, item_name)
 
   target_expr <- {
-    sapply(get(target_obj), lambda_fn)
+    sapply(eval.parent(parse(text = target_obj)), lambda_fn)
   }
 
   out <- eval(target_expr, enclos = parent.frame())
@@ -33,7 +33,7 @@ listcomp <- function(string) {
     cond_fn <- get_item_operation_fn(lambda_cond, item_name)
 
     cond_expr <- {
-      sapply(get(target_obj), cond_fn)
+      sapply(eval.parent(parse(text = target_obj)), cond_fn)
     }
 
     cond_vec <- eval(cond_expr, enclos = parent.frame())
