@@ -1,31 +1,16 @@
-get_target_object <- function(string) {
-  if (contains_nesting(string)) {
-    return(paste0("lc('", extract_nesting(string), "')"))
+handle_square_brackets <- function(string) {
+  if (str_detect(string, "^\\[") & str_detect(string, "\\]$")) {
+    string <- str_replace(string, "^\\[", "")
+    string <- str_replace(string, "\\]$", "")
   }
-  out <- str_extract(string, "(?<=in ).+?(\\z| (?=if))")
-  str_replace(out, " ", "")
+  string <- str_replace(string, "\\[", "lc(\"")
+  str_replace(string, "\\]", "\")")
 }
 
-get_item_name <- function(string) {
-  str_extract(remove_nesting(string), "[a-zA-Z0-9]+(?= in)")
+is_for_clause <- function(string) {
+  str_detect(string, "^for")
 }
 
-get_item_operation <- function(string) {
-  str_extract(remove_nesting(string), ".+(?= for)")
-}
-
-get_item_condition <- function(string) {
-  str_extract(remove_nesting(string), "(?<=if ).+")
-}
-
-contains_nesting <- function(string) {
-  str_detect(string, "\\[.+\\]")
-}
-
-extract_nesting <- function(string) {
-  str_extract(string, "(?<=\\[).+(?=\\])")
-}
-
-remove_nesting <- function(string) {
-  str_replace(string, "\\[.+\\]", "")
+is_if_clause <- function(string) {
+  str_detect(string, "^if")
 }
