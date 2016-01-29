@@ -28,8 +28,6 @@ parse_if <- function(string, env) {
 new_env_with_value <- function(var_value, var_name, parent) {
   env <- new.env(parent = parent)
   assign(var_name, var_value, envir = env)
-  # names(env[[var_name]]) <- var_name
-  # names(env) <- var_name
   env
 }
 
@@ -37,7 +35,7 @@ evaluate_expression_in_env <- function(string, env) {
   eval(parse(text = string), envir = env)
 }
 
-usapply <- function(X, ...) {
+ulapply <- function(X, ...) {
   lapply(unlist(X), ...)
 }
 

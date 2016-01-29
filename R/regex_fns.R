@@ -1,10 +1,9 @@
-handle_square_brackets <- function(string) {
+handle_outer_squares <- function(string) {
   if (str_detect(string, "^\\[") & str_detect(string, "\\]$")) {
     string <- str_replace(string, "^\\[", "")
     string <- str_replace(string, "\\]$", "")
   }
-  string <- str_replace(string, "\\[", "lc(\"")
-  str_replace(string, "\\]", "\")")
+  string
 }
 
 is_for_clause <- function(string) {

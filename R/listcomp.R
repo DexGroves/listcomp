@@ -19,17 +19,17 @@
 #' data(diamonds)
 #' lc('mean(x) for x in diamonds if is.numeric(x)')
 lc <- function(string) {
-  string <- handle_square_brackets(string)
+  string <- parse_square_brackets(string)
   clauses <- parse_clauses(string)
   left_expr <- clauses[1]
   forif_exprs <- clauses[2:length(clauses)]
 
   all_envs <- c(new.env(parent = parent.frame()))
   for (forif_expr in forif_exprs) {
-    all_envs <- usapply(all_envs, parse_forif, string = forif_expr)
+    all_envs <- ulapply(all_envs, parse_forif, string = forif_expr)
   }
 
-  out <- usapply(all_envs, evaluate_expression_in_env, string = left_expr)
+  out <- ulapply(all_envs, evaluate_expression_in_env, string = left_expr)
 
   if (all_unary(out)) {
     out <- unlist(out)

@@ -1,3 +1,5 @@
+context("Basic sequence operations")
+
 my_list <- seq(10)
 
 
