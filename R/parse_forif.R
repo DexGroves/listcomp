@@ -13,7 +13,6 @@ parse_for <- function(string, env) {
   var_name <- str_extract(string, "(?<=for ).+?(?= in)")
   var_values_txt <- str_extract(string, "(?<= in ).+")
   var_values <- evaluate_expression_in_env(var_values_txt, env)
-
   sapply(var_values, new_env_with_value, var_name = var_name, parent = env)
 }
 
@@ -29,6 +28,8 @@ parse_if <- function(string, env) {
 new_env_with_value <- function(var_value, var_name, parent) {
   env <- new.env(parent = parent)
   assign(var_name, var_value, envir = env)
+  # names(env[[var_name]]) <- var_name
+  # names(env) <- var_name
   env
 }
 
@@ -37,5 +38,12 @@ evaluate_expression_in_env <- function(string, env) {
 }
 
 usapply <- function(X, ...) {
-  sapply(unlist(X), ...)
+  lapply(unlist(X), ...)
+}
+
+all_unary <- function(x) {
+  if (any(lapply(x, length) > 1)) {
+    return(FALSE)
+  }
+  TRUE
 }

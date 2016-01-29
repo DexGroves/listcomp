@@ -13,7 +13,7 @@
 #' nested_list <- list(seq(5), seq(10))
 #' lc('item ^ 2 for item in my_sequence if item %% 2 == 0')
 #' lc('x ^ 2 for x in [max(y) for y in nested_list]')
-#' lc("j for i in seq(5) if i > 3 for j in seq(i)")
+#' lc('j for i in seq(5) if i > 3 for j in seq(i)')
 #'
 #' library("ggplot2")
 #' data(diamonds)
@@ -24,13 +24,18 @@ lc <- function(string) {
   left_expr <- clauses[1]
   forif_exprs <- clauses[2:length(clauses)]
 
-  all_environments <- c(new.env(parent = parent.frame()))
+  all_envs <- c(new.env(parent = parent.frame()))
   for (forif_expr in forif_exprs) {
-    all_environments <- usapply(all_environments, parse_forif,
-                                string = forif_expr)
+    all_envs <- usapply(all_envs, parse_forif, string = forif_expr)
   }
 
-  usapply(all_environments, evaluate_expression_in_env, string = left_expr)
+  out <- usapply(all_envs, evaluate_expression_in_env, string = left_expr)
+
+  if (all_unary(out)) {
+    out <- unlist(out)
+  }
+
+  out
 }
 
 listcomp <- lc
