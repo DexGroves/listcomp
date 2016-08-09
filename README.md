@@ -6,6 +6,10 @@ evaluated in the calling environment. Actual logic uses R syntax.
  
 Supports nesting by wrapping inner comprehensions with `[]`.
 
+Can handle anything* of the form `<R expression> for name in <R object> if <R expression>`.
+
+\* Probably not anything
+
 ```R
 # install.packages("devtools")
 # devtools::install_github("DexGroves/listcomp")
